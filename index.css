@@ -1,0 +1,51 @@
+.center {
+    display: flex;
+    justify-content: center;
+    width:100%;
+}
+
+#clock {
+    width:200px;
+    height:200px;
+    padding:1rem;
+}
+
+#clock-face {
+    border-radius: 50%;
+    border: 10px solid black;
+    width:100%;
+    height:100%;
+    position: relative;
+}
+
+.hand {
+    width:45%;
+    height:5px;
+    background-color: black;
+    position: absolute;
+    
+    top:49%;
+    right:50%;
+    transform: rotate(90deg);
+    transform-origin: 100%;
+}
+
+.hand-second {
+    background-color: red;
+    height:1px;
+}
+
+.hand-minute {
+    height:3px;
+}
+
+#time {
+    margin-top: 2rem;
+}
+
+.slidecontainer { 
+    width:100%;
+}
+.slidecontainer input {
+    width:100%;
+}

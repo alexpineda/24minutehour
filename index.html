@@ -1,0 +1,109 @@
+<html>
+    <head>
+        <title>What if there were 60 hours in the day?</title>
+        <link rel="stylesheet" href="index.css"/>
+    </head>
+    <body>
+
+        <div class="center">
+            <h1>What if there were 60 hours in the day?</h1>
+        </div>
+
+        <div class="center">
+            <div id="clock">
+                <div id="clock-face">
+                    <div class="hand hand-second"></div>
+                    <div class="hand hand-minute"></div>
+                    <div class="hand hand-hour"></div>
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="center">
+            <div id="time">
+                <span id="hours"></span> : <span id="minutes"></span> : <span id="seconds"></span>
+            </div>
+        </div>
+
+        <div class="center">
+            <p>
+                You have <span id="hours-left"></span> left in the day. What will you do with your next hour? 
+            </p>
+        </div>
+
+        <script>
+            /**
+            @todo layout
+            @todo add cleaner styling
+            @todo add empty textbox
+            @todo quotes? there is still a lot of day left
+            */
+            const els = {
+                hours: document.getElementById('hours'),
+                minutes: document.getElementById('minutes'),
+                seconds: document.getElementById('seconds'),
+
+                hoursLeft: document.getElementById('hours-left'),
+
+                hourHand: document.querySelector('.hand-hour'),
+                minuteHand: document.querySelector('.hand-minute'),
+                secondHand: document.querySelector('.hand-second')
+            };
+            
+
+            function rp(num) {
+                return (""+Math.floor(num)).padStart(2, "0");
+            }
+
+            function updateClock() {
+                const d = new Date();
+                const h = d.getHours();
+                const m = d.getMinutes();
+                const s = d.getSeconds();
+                
+                updateDom(dateToSecondsInDay(h,m,s));
+            };
+
+            function dateToSecondsInDay(h,m,s) {
+                return (h*60*60)+(m*60)+s;
+            }
+
+            function updateDom(t) {
+                
+                const minutes = (t/60)%24;
+                const hours = t/(60*24);
+                const s = t%60;
+
+
+                els.hours.innerHTML = rp(hours);
+                els.minutes.innerHTML = rp(minutes);
+                els.seconds.innerHTML = rp(s);
+
+                let hoursLeft = '';
+                if (24 - minutes < 8) {
+                    hoursLeft = Math.floor(60-hours);
+                    hoursLeft += hoursLeft == 1 ? ' hour' : ' hours';
+                } else if (24-minutes > 16) { 
+                    hoursLeft = Math.ceil(60-hours);
+                    hoursLeft += hoursLeft == 1 ? ' hour' : ' hours';
+                } else {
+                    hoursLeft = Math.floor(60-hours) + ' and a half hours'
+                }
+                els.hoursLeft.innerHTML = hoursLeft;
+
+                const hourDegrees = Math.round(hours/60*360) + 90;
+                const minutesDegrees = Math.round(minutes/24*360) + 90;
+                const secondsDegrees = Math.round(s/60*360) + 90;
+
+                els.hourHand.style.transform = `rotate(${hourDegrees}deg)`;
+                els.minuteHand.style.transform = `rotate(${minutesDegrees}deg)`;
+                els.secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
+            }
+
+            setInterval(updateClock, 1000);
+            updateClock();
+
+        </script>
+    </body>
+</html>
