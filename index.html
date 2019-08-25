@@ -28,7 +28,8 @@
 
         <div class="center">
             <p>
-                You have <span id="hours-left"></span> left in the day. What will you do with your next hour? 
+                You have <span id="hours-left"></span> left in the day. What will you do with your next 
+                "hour"? 
             </p>
         </div>
 
@@ -81,16 +82,42 @@
                 els.seconds.innerHTML = rp(s);
 
                 let hoursLeft = '';
-                if (24 - minutes < 8) {
-                    hoursLeft = Math.floor(60-hours);
-                    hoursLeft += hoursLeft == 1 ? ' hour' : ' hours';
-                } else if (24-minutes > 16) { 
-                    hoursLeft = Math.ceil(60-hours);
-                    hoursLeft += hoursLeft == 1 ? ' hour' : ' hours';
-                } else {
-                    hoursLeft = Math.floor(60-hours) + ' and a half hours'
+
+                function createHoursLeftLabel() {
+                    const roundingFn = 24-minutes > 16 ? Math.ceil : Math.floor;
+                    const hoursLeft = roundingFn(60-hours);
+
+                    console.log('hoursLeft', hoursLeft);
+                    if (hoursLeft == 0) {
+                        return 'less than an hour';
+                    } else {
+                        return hoursLeft + (hoursLeft == 1 ? ' hour' : ' hours');
+                    }
                 }
-                els.hoursLeft.innerHTML = hoursLeft;
+
+                // hoursLeft = createHoursLeftLabel(x => x < 8, Math.floor);
+                
+                // if (24 - minutes < 8) {
+                //     hoursLeft = Math.floor(60-hours);
+                //     hoursLeft += hoursLeft == 1 ? ' hour' : ' hours';
+                // } else if (24-minutes > 16) { 
+                //     hoursLeft = Math.ceil(60-hours);
+                //     hoursLeft += hoursLeft == 1 ? ' hour' : ' hours';
+                // } else {
+                //     hoursLeft = Math.floor(60-hours) + ' and a half hours'
+                // }
+                els.hoursLeft.innerHTML = createHoursLeftLabel();
+
+                // if (24 - minutes < 8) {
+                //     hoursLeft = Math.floor(60-hours);
+                //     hoursLeft += hoursLeft == 1 ? ' hour' : ' hours';
+                // } else if (24-minutes > 16) { 
+                //     hoursLeft = Math.ceil(60-hours);
+                //     hoursLeft += hoursLeft == 1 ? ' hour' : ' hours';
+                // } else {
+                //     hoursLeft = Math.floor(60-hours) + ' and a half hours'
+                // }
+                // els.hoursLeft.innerHTML = hoursLeft;
 
                 const hourDegrees = Math.round(hours/60*360) + 90;
                 const minutesDegrees = Math.round(minutes/24*360) + 90;
