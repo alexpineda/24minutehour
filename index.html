@@ -62,8 +62,9 @@
                 const h = d.getHours();
                 const m = d.getMinutes();
                 const s = d.getSeconds();
-                
-                updateDom(dateToSecondsInDay(h,m,s));
+                const t = dateToSecondsInDay(h,m,s);
+
+                updateDom(t);
             };
 
             function dateToSecondsInDay(h,m,s) {
@@ -76,49 +77,12 @@
                 const hours = t/(60*24);
                 const s = t%60;
 
-
+                // digital clock
                 els.hours.innerHTML = rp(hours);
                 els.minutes.innerHTML = rp(minutes);
                 els.seconds.innerHTML = rp(s);
 
-                let hoursLeft = '';
-
-                function createHoursLeftLabel() {
-                    const roundingFn = 24-minutes > 16 ? Math.ceil : Math.floor;
-                    const hoursLeft = roundingFn(60-hours);
-
-                    console.log('hoursLeft', hoursLeft);
-                    if (hoursLeft == 0) {
-                        return 'less than an hour';
-                    } else {
-                        return hoursLeft + (hoursLeft == 1 ? ' hour' : ' hours');
-                    }
-                }
-
-                // hoursLeft = createHoursLeftLabel(x => x < 8, Math.floor);
-                
-                // if (24 - minutes < 8) {
-                //     hoursLeft = Math.floor(60-hours);
-                //     hoursLeft += hoursLeft == 1 ? ' hour' : ' hours';
-                // } else if (24-minutes > 16) { 
-                //     hoursLeft = Math.ceil(60-hours);
-                //     hoursLeft += hoursLeft == 1 ? ' hour' : ' hours';
-                // } else {
-                //     hoursLeft = Math.floor(60-hours) + ' and a half hours'
-                // }
-                els.hoursLeft.innerHTML = createHoursLeftLabel();
-
-                // if (24 - minutes < 8) {
-                //     hoursLeft = Math.floor(60-hours);
-                //     hoursLeft += hoursLeft == 1 ? ' hour' : ' hours';
-                // } else if (24-minutes > 16) { 
-                //     hoursLeft = Math.ceil(60-hours);
-                //     hoursLeft += hoursLeft == 1 ? ' hour' : ' hours';
-                // } else {
-                //     hoursLeft = Math.floor(60-hours) + ' and a half hours'
-                // }
-                // els.hoursLeft.innerHTML = hoursLeft;
-
+                // analog clock
                 const hourDegrees = Math.round(hours/60*360) + 90;
                 const minutesDegrees = Math.round(minutes/24*360) + 90;
                 const secondsDegrees = Math.round(s/60*360) + 90;
@@ -126,6 +90,16 @@
                 els.hourHand.style.transform = `rotate(${hourDegrees}deg)`;
                 els.minuteHand.style.transform = `rotate(${minutesDegrees}deg)`;
                 els.secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
+
+                // hours left 
+                const roundingFn = 24-minutes > 16 ? Math.ceil : Math.floor;
+                const hoursLeft = roundingFn(60-hours);
+
+                if (hoursLeft == 0) {
+                    els.hoursLeft.innerHTML = 'less than an hour';
+                } else {
+                    els.hoursLeft.innerHTML =  hoursLeft + (hoursLeft == 1 ? ' hour' : ' hours');
+                }
             }
 
             setInterval(updateClock, 1000);
